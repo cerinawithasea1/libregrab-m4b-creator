@@ -3,6 +3,9 @@
 # Basic error handling
 set -e
 
+# Get the directory of the script
+DIR=$(dirname $(realpath $0))
+
 # Check ffmpeg dependency
 if ! command -v "ffmpeg" &> /dev/null; then
     echo "Error: ffmpeg is required but not found."
@@ -12,7 +15,7 @@ fi
 
 # Display usage instructions if no directory provided
 # Default output directory
-OUTPUT_DIR="/Users/cerinawithasea/totag"
+OUTPUT_DIR="~/Downloads"
 
 # Parse command line arguments
 while [[ $# -gt 0 ]]; do
@@ -99,8 +102,8 @@ fi
 # Check if metadata.json exists
 if [ -f "metadata/metadata.json" ]; then
     echo "Found metadata.json, using it for chapter information..."
-    python3 ~/bin/convert_chapters.py metadata/metadata.json
-    python3 ~/bin/convert_to_ffmpeg_chapters.py chapters.txt
+    python3 "$DIR/convert_chapters.py" metadata/metadata.json
+    python3 "$DIR/convert_to_ffmpeg_chapters.py" chapters.txt
 else
     echo "No metadata.json found, using MP3 filenames for chapters..."
     # Create chapters metadata from MP3 files
